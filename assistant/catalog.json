@@ -1,0 +1,199 @@
+{
+  "version": "0.4.0",
+  "clients": [
+    {
+      "id": "codex-desktop",
+      "name": "Codex / ChatGPT 桌面版",
+      "protocol": "responses",
+      "installer": "msix",
+      "source": "https://learn.chatgpt.com/docs/enterprise/windows-deployment"
+    },
+    {
+      "id": "claude-code",
+      "name": "Claude Code CLI",
+      "protocol": "messages",
+      "installer": "winget",
+      "packageId": "Anthropic.ClaudeCode",
+      "source": "https://code.claude.com/docs/en/setup"
+    },
+    {
+      "id": "opencode",
+      "name": "OpenCode 1 CLI",
+      "protocol": "chat",
+      "installer": "winget",
+      "packageId": "SST.opencode",
+      "source": "https://opencode.ai/docs/"
+    },
+    {
+      "id": "aider",
+      "name": "Aider CLI",
+      "protocol": "chat",
+      "installer": "uv",
+      "source": "https://aider.chat/docs/install.html"
+    }
+  ],
+  "providers": [
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "routes": {
+        "responses": "https://api.deepseek.com",
+        "messages": "https://api.deepseek.com/anthropic",
+        "chat": "https://api.deepseek.com/v1"
+      },
+      "models": [
+        "deepseek-flash",
+        "deepseek-v4-pro"
+      ],
+      "source": "https://api-docs.deepseek.com/quick_start/agent_integrations/"
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI API",
+      "routes": {
+        "responses": "https://api.openai.com/v1",
+        "chat": "https://api.openai.com/v1"
+      },
+      "models": [],
+      "source": "https://learn.chatgpt.com/docs/enterprise/connect-to-a-gateway"
+    },
+    {
+      "id": "anthropic",
+      "name": "Anthropic API",
+      "routes": {
+        "messages": "https://api.anthropic.com"
+      },
+      "models": [],
+      "source": "https://code.claude.com/docs/en/settings"
+    },
+    {
+      "id": "custom-responses",
+      "name": "自定义 Responses 服务商",
+      "routes": {
+        "responses": ""
+      },
+      "models": [],
+      "source": "https://learn.chatgpt.com/docs/enterprise/gateway-compatibility"
+    },
+    {
+      "id": "custom-messages",
+      "name": "自定义 Messages 服务商",
+      "routes": {
+        "messages": ""
+      },
+      "models": [],
+      "source": "https://code.claude.com/docs/en/llm-gateway"
+    },
+    {
+      "id": "gemini",
+      "name": "Google Gemini API",
+      "routes": {
+        "chat": "https://generativelanguage.googleapis.com/v1beta/openai"
+      },
+      "models": [],
+      "source": "https://ai.google.dev/gemini-api/docs/openai"
+    },
+    {
+      "id": "qwen-cn",
+      "name": "通义千问 / 百炼（北京按量）",
+      "routes": {
+        "chat": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "messages": "https://dashscope.aliyuncs.com/apps/anthropic"
+      },
+      "models": [],
+      "source": "https://help.aliyun.com/zh/model-studio/base-url"
+    },
+    {
+      "id": "qwen-intl",
+      "name": "通义千问 / 百炼（新加坡按量）",
+      "routes": {
+        "chat": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+        "messages": "https://dashscope-intl.aliyuncs.com/apps/anthropic"
+      },
+      "models": [],
+      "source": "https://help.aliyun.com/zh/model-studio/base-url"
+    },
+    {
+      "id": "qwen-coding-cn",
+      "name": "百炼 Coding Plan（北京）",
+      "routes": {
+        "chat": "https://coding.dashscope.aliyuncs.com/v1",
+        "messages": "https://coding.dashscope.aliyuncs.com/apps/anthropic"
+      },
+      "models": [],
+      "source": "https://help.aliyun.com/zh/model-studio/base-url"
+    },
+    {
+      "id": "moonshot",
+      "name": "Kimi / Moonshot API（国际）",
+      "routes": {
+        "chat": "https://api.moonshot.ai/v1"
+      },
+      "models": [],
+      "source": "https://github.com/MoonshotAI/kimi-code/blob/main/docs/en/configuration/providers.md"
+    },
+    {
+      "id": "zhipu",
+      "name": "智谱 GLM API（按量）",
+      "routes": {
+        "chat": "https://open.bigmodel.cn/api/paas/v4"
+      },
+      "models": [],
+      "source": "https://docs.bigmodel.cn/cn/guide/develop/openai/introduction"
+    },
+    {
+      "id": "zhipu-coding",
+      "name": "智谱 GLM Coding Plan",
+      "routes": {
+        "messages": "https://open.bigmodel.cn/api/anthropic"
+      },
+      "models": [],
+      "source": "https://docs.bigmodel.cn/cn/coding-plan/tool/claude"
+    },
+    {
+      "id": "siliconflow",
+      "name": "硅基流动（中国）",
+      "routes": {
+        "chat": "https://api.siliconflow.cn/v1"
+      },
+      "models": [],
+      "source": "https://docs.siliconflow.cn/docs/api/chat-completions-post"
+    },
+    {
+      "id": "openrouter",
+      "name": "OpenRouter",
+      "routes": {
+        "chat": "https://openrouter.ai/api/v1"
+      },
+      "models": [],
+      "source": "https://openrouter.ai/docs/quickstart"
+    },
+    {
+      "id": "custom-chat",
+      "name": "自定义 Chat Completions 服务商",
+      "routes": {
+        "chat": ""
+      },
+      "models": [],
+      "source": "https://opencode.ai/docs/providers/"
+    },
+    {
+      "id": "ollama",
+      "name": "Ollama（本地）",
+      "routes": {
+        "chat": "http://127.0.0.1:11434/v1"
+      },
+      "models": [],
+      "source": "https://docs.ollama.com/api/openai-compatibility"
+    },
+    {
+      "id": "lmstudio",
+      "name": "LM Studio（本地）",
+      "routes": {
+        "chat": "http://127.0.0.1:1234/v1"
+      },
+      "models": [],
+      "source": "https://lmstudio.ai/docs/developer/openai-compat"
+    }
+  ]
+}
