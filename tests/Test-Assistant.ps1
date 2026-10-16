@@ -13,6 +13,15 @@ function Assert-Rejected([scriptblock]$Work,[string]$Message) {
     try { & $Work | Out-Null } catch { $taskRejected = $true }
     Assert-Check $taskRejected $Message
 }
+Assert-Check ((Get-AssistantLanguage) -eq 'en-US') 'New module defaults to English before loading preferences'
+$taskOriginalCulture = [Threading.Thread]::CurrentThread.CurrentUICulture
+try {
+    [Threading.Thread]::CurrentThread.CurrentUICulture = [Globalization.CultureInfo]::GetCultureInfo('zh-CN')
+    $taskModule = Import-Module (Join-Path $taskRoot 'assistant/AgentSetup.Core.psm1') -Force -PassThru
+    Assert-Check ((Get-AssistantLanguage) -eq 'en-US') 'Fresh startup remains English on a Chinese Windows display culture'
+    Set-AssistantLanguage -DataRoot (Join-Path $taskTestRoot 'first-run-no-preferences')
+    Assert-Check ((Get-AssistantLanguage) -eq 'en-US') 'First run without preferences uses English on a Chinese display culture'
+} finally { [Threading.Thread]::CurrentThread.CurrentUICulture = $taskOriginalCulture }
 foreach ($taskFile in @(Get-ChildItem -LiteralPath (Join-Path $taskRoot 'assistant') -File | Where-Object Extension -in '.ps1','.psm1') + @(Get-Item (Join-Path $taskRoot 'Build-Assistant.ps1'))) {
     $taskTokens = $null; $taskErrors = $null
     [Management.Automation.Language.Parser]::ParseFile($taskFile.FullName,[ref]$taskTokens,[ref]$taskErrors) | Out-Null
@@ -55,11 +64,12 @@ $taskPreference = Get-Content -LiteralPath $taskPreferenceFile -Raw | ConvertFro
 Assert-Check ($taskPreference.Language -eq 'zh-CN' -and $taskPreference.OtherSetting -eq 'preserve') 'Updating language preserves other preferences'
 Set-AssistantLanguage -Language en-US -DataRoot $taskPreferenceRoot
 Assert-Check ((Get-AssistantLanguage) -eq 'en-US' -and (Get-Content -LiteralPath $taskPreferenceFile -Raw | ConvertFrom-Json).Language -eq 'zh-CN') 'Explicit language overrides the preference for this run only'
+Set-AssistantLanguage -DataRoot $taskPreferenceRoot
+Assert-Check ((Get-AssistantLanguage) -eq 'zh-CN') 'A saved Chinese preference still overrides the English default'
 foreach ($taskBadPreference in @('{broken-json','{"Language":"fr-FR"}','null','[]')) {
     [IO.File]::WriteAllText($taskPreferenceFile,$taskBadPreference)
     Set-AssistantLanguage -DataRoot $taskPreferenceRoot
-    $taskCultureLanguage = if ([Globalization.CultureInfo]::CurrentUICulture.Name -like 'zh*') { 'zh-CN' } else { 'en-US' }
-    Assert-Check ((Get-AssistantLanguage) -eq $taskCultureLanguage) ('Invalid preference falls back to Windows language: ' + $taskBadPreference)
+    Assert-Check ((Get-AssistantLanguage) -eq 'en-US') ('Invalid preference falls back to English: ' + $taskBadPreference)
 }
 Set-AssistantLanguage -Language zh-CN
 $taskChinesePlan = New-AssistantPlan -Id locale-check -ClientId codex-desktop -ProviderId deepseek -Model deepseek-flash -DataRoot $taskTestRoot

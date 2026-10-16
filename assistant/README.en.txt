@@ -4,7 +4,7 @@ Getting started
 Extract the entire ZIP and double-click Agent-Assistant.cmd.
 Use the top-right menu to switch between Simplified Chinese and English.
 The assistant remembers your selection in preferences.json in its data directory.
-On first use, it follows the Windows display language: Chinese for zh, English otherwise.
+English is the default on first use, regardless of the Windows display language.
 Switching languages preserves unsaved fields and the selected client and provider.
 The assistant translates its own interface, new messages and help. Existing log entries
 keep their original language. Windows dialogs, installers and client apps use their own languages.

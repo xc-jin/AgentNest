@@ -36,9 +36,10 @@
     $taskTitle.Font = New-Object Drawing.Font('Microsoft YaHei UI',17,[Drawing.FontStyle]::Bold)
     $taskTitle.Height = 40
     $taskLanguage = Add-Combo 612 24 140
-    $null = $taskLanguage.Items.Add('中文 (简体)')
+    $taskLanguageCodes = @('en-US','zh-CN')
     $null = $taskLanguage.Items.Add('English')
-    $taskLanguage.SelectedIndex = if ((Get-AssistantLanguage) -eq 'zh-CN') { 0 } else { 1 }
+    $null = $taskLanguage.Items.Add('中文 (简体)')
+    $taskLanguage.SelectedIndex = [Array]::IndexOf($taskLanguageCodes,(Get-AssistantLanguage))
     $null = Add-Label '每个方案独立保存配置；通过本助手启动，切换客户端和服务商。' 26 68 730
     $null = Add-Label '已有方案' 26 110
     $taskSaved = Add-Combo 190 106 410
@@ -321,7 +322,7 @@
     })
     $taskLanguage.Add_SelectedIndexChanged({
         if ($taskLanguage.SelectedIndex -lt 0) { return }
-        $taskChosenLanguage = if ($taskLanguage.SelectedIndex -eq 0) { 'zh-CN' } else { 'en-US' }
+        $taskChosenLanguage = $taskLanguageCodes[$taskLanguage.SelectedIndex]
         Set-AssistantLanguage -Language $taskChosenLanguage
         $taskState.Translating = $true
         $taskClientIndex = $taskClients.SelectedIndex
@@ -405,7 +406,7 @@
                 $taskEndpoint.Text -ne 'https://example.com/v1' -or $taskKey.Text -ne 'ui-test-only-invalid-key' -or
                 $taskModelCatalog.Text -ne 'unsaved-catalog.json' -or $taskWorkdir.Text -ne $DataRoot) { throw 'Language switching lost unsaved input or selected IDs.' }
             if ($taskSave.Text -ne (Get-AssistantText '1. 一键配置并安装')) { throw 'Button translation did not update.' }
-            $taskExpectedClient = if ($taskLanguageIndex -eq 0) { 'Agent 客户端' } else { 'Agent client' }
+            $taskExpectedClient = if ($taskLanguageCodes[$taskLanguageIndex] -eq 'zh-CN') { 'Agent 客户端' } else { 'Agent client' }
             $taskClientLabel = @($taskForm.Controls | Where-Object Tag -eq 'i18n:Agent 客户端')[0]
             if ($taskClientLabel.Text -ne $taskExpectedClient) { throw 'Field label translation did not update.' }
         }

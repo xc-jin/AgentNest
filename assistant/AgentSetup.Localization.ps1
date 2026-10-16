@@ -1,4 +1,4 @@
-﻿$script:AssistantLanguage = if ([Globalization.CultureInfo]::CurrentUICulture.Name -like 'zh*') { 'zh-CN' } else { 'en-US' }
+﻿$script:AssistantLanguage = 'en-US'
 $script:AssistantTranslations = @{}
 foreach ($taskLocale in @('zh-CN','en-US')) {
     $script:AssistantTranslations[$taskLocale] = Get-Content -LiteralPath (Join-Path $PSScriptRoot ('locales/' + $taskLocale + '.json')) -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -14,11 +14,11 @@ function Set-AssistantLanguage {
             try {
                 $taskPreference = Get-Content -LiteralPath $taskPreferences -Raw -Encoding UTF8 | ConvertFrom-Json
                 if ($taskPreference.PSObject.Properties['Language'] -and $taskPreference.Language -in @('zh-CN','en-US')) { $Language = $taskPreference.Language }
-            } catch { # Invalid preferences fall back to the Windows display language.
+            } catch { # Invalid preferences fall back to English.
             }
         }
     }
-    if (-not $Language) { $Language = if ([Globalization.CultureInfo]::CurrentUICulture.Name -like 'zh*') { 'zh-CN' } else { 'en-US' } }
+    if (-not $Language) { $Language = 'en-US' }
     $script:AssistantLanguage = $Language
 }
 
